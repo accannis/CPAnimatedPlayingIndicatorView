@@ -16,7 +16,7 @@ static inline CGPathRef zeroAmplitudeBarPath(CGRect bounds, float barSpacing, fl
        );
     float height = barCornerRadius * 2; //we can't go below 2xradius
     CGRect rect = CGRectMake(xPosition, bounds.size.height - height, barWidth, height);
-    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect barCornerRadius:barCornerRadius].CGPath;
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:barCornerRadius].CGPath;
     return path;
 }
 
@@ -26,7 +26,7 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
        barSpacing * ((float)index / total)
        );
     CGRect rect = CGRectMake(xPosition, 0, barWidth, bounds.size.height);
-    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect barCornerRadius:barCornerRadius].CGPath;
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:barCornerRadius].CGPath;
     return path;
 }
 
