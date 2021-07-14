@@ -31,7 +31,6 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
 }
 
 @implementation CPAnimatedPlayingIndicatorView{
-    BOOL didAwake;
     int animationStartCounter;
     BOOL animating;
 }
@@ -127,7 +126,6 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
     if(!_divergence){
         _divergence = 5;
     }
-    didAwake = YES;
 }
 
 -(float)barWidth{
@@ -186,9 +184,6 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
 }
 
 -(void)performLayout{
-    if(!didAwake){
-        return;
-    }
     [self createLayersIfNeeded];
     if(animating){
         [self beginAnimatingLayers];
