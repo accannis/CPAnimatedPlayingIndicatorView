@@ -33,8 +33,8 @@
     self.indicatorView.barSpacing = sender.value;
 }
 
-- (IBAction)didChangeCornerRadius:(UISlider *)sender {
-    self.indicatorView.cornerRadius = sender.value;
+- (IBAction)didChangeBarCornerRadius:(UISlider *)sender {
+    self.indicatorView.barCornerRadius = sender.value;
 }
 
 - (IBAction)didChangeAnimationSpeed:(UISlider *)sender {

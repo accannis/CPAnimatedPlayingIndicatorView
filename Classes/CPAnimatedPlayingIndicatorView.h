@@ -18,7 +18,7 @@ IB_DESIGNABLE
 /// Space between bars, in points. Default is 0.
 @property(nonatomic) IBInspectable float barSpacing;
 /// Corner radius of each bar, in points. Default is 0.
-@property(nonatomic) IBInspectable float cornerRadius;
+@property(nonatomic) IBInspectable float barCornerRadius;
 /// Animation speed. The units for this one is a bit complicated. Hey, I've failed math 3 times in college. Play with this value to get the desired effect.
 @property(nonatomic) IBInspectable double animationSpeed;
 /// Defines how much each consequent bar has a different height. Default is 5, play with it to get desired value.

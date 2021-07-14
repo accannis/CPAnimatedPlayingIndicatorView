@@ -9,24 +9,24 @@
 #import "CPAnimatedPlayingIndicatorView.h"
 @import QuartzCore;
 
-static inline CGPathRef zeroAmplitudeBarPath(CGRect bounds, float barSpacing, float barWidth, float cornerRadius, int index, int total){
+static inline CGPathRef zeroAmplitudeBarPath(CGRect bounds, float barSpacing, float barWidth, float barCornerRadius, int index, int total){
     float xPosition = index / (float)total * bounds.size.width //normal position
     + ( //adjustment for bar spacing
        barSpacing * ((float)index / total)
        );
-    float height = cornerRadius * 2; //we can't go below 2xradius
+    float height = barCornerRadius * 2; //we can't go below 2xradius
     CGRect rect = CGRectMake(xPosition, bounds.size.height - height, barWidth, height);
-    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius].CGPath;
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect barCornerRadius:barCornerRadius].CGPath;
     return path;
 }
 
-static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, float barWidth, float cornerRadius, int index, int total){
+static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, float barWidth, float barCornerRadius, int index, int total){
     float xPosition = index / (float)total * bounds.size.width //normal position
     + ( //adjustment for bar spacing
        barSpacing * ((float)index / total)
        );
     CGRect rect = CGRectMake(xPosition, 0, barWidth, bounds.size.height);
-    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius].CGPath;
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:rect barCornerRadius:barCornerRadius].CGPath;
     return path;
 }
 
@@ -58,7 +58,7 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
     float barWidth = ((bounds.size.width - (_barSpacing * (_barCount - 1))) / _barCount);
     CGColorRef colorRef = self.color.CGColor;
     for (int i = 0; i < _barCount; i++) {
-        CGPathRef path = zeroAmplitudeBarPath(bounds, _barSpacing, barWidth, _cornerRadius, i, _barCount);
+        CGPathRef path = zeroAmplitudeBarPath(bounds, _barSpacing, barWidth, _barCornerRadius, i, _barCount);
         CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
         shapeLayer.path = path;
         shapeLayer.fillColor = colorRef;
@@ -92,8 +92,8 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
     [self setNeedsDisplay];
 }
 
--(void)setCornerRadius:(float)cornerRadius{
-    _cornerRadius = cornerRadius;
+-(void)setbarCornerRadius:(float)barCornerRadius{
+    _barCornerRadius = barCornerRadius;
     [self setNeedsDisplay];
 }
 
@@ -146,8 +146,8 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
     animation.autoreverses = YES;
     animation.removedOnCompletion = NO;
     animation.repeatCount = MAXFLOAT;
-    CGPathRef startPath = zeroAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _cornerRadius, index, _barCount);
-    CGPathRef endPath = fullAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _cornerRadius, index, _barCount);
+    CGPathRef startPath = zeroAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _barCornerRadius, index, _barCount);
+    CGPathRef endPath = fullAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _barCornerRadius, index, _barCount);
     animation.fromValue = (__bridge id _Nullable)(startPath);
     animation.toValue = (__bridge id _Nullable)(endPath);
     [layer addAnimation:animation forKey:@"pathAnimation"];
@@ -158,7 +158,7 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
     for (int i = 0; i < self.layer.sublayers.count; i++) {
         CAShapeLayer *layer = (CAShapeLayer*)self.layer.sublayers[i];
         [layer removeAnimationForKey:@"pathAnimation"];
-        layer.path = zeroAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _cornerRadius, i, _barCount);
+        layer.path = zeroAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _barCornerRadius, i, _barCount);
         float delay = _divergence / 5 * i / _animationSpeed;
         __block int index = i;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -179,7 +179,7 @@ static inline CGPathRef fullAmplitudeBarPath(CGRect bounds, float barSpacing, fl
         animation.duration  = 0.15;
         animation.fillMode = kCAFillModeBoth;
         animation.removedOnCompletion = NO;
-        CGPathRef endPath = zeroAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _cornerRadius, i, _barCount);
+        CGPathRef endPath = zeroAmplitudeBarPath(self.bounds, _barSpacing, [self barWidth], _barCornerRadius, i, _barCount);
         animation.toValue = (__bridge id _Nullable)(endPath);
         [layer addAnimation:animation forKey:@"pathAnimation"];
     }
